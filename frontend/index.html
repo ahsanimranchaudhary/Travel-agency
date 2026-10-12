@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Wanderly travel experiences" />
+    <title>Wanderly | Travel made simple</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="logo" href="#home">wanderly<span>.</span></a>
+      <button class="menu-button" aria-label="Open navigation" aria-expanded="false">☰</button>
+      <nav class="main-nav">
+        <a href="#destinations">Destinations</a>
+        <a href="#experiences">Experiences</a>
+        <a href="#about">About us</a>
+        <a class="nav-cta" href="#search">Plan a trip</a>
+      </nav>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">YOUR NEXT STORY STARTS HERE</p>
+          <h1>Travel far.<br />Feel more.</h1>
+          <p class="hero-copy">Thoughtfully planned journeys to the world's most memorable places.</p>
+          <a class="button button-light" href="#destinations">Explore destinations <span>→</span></a>
+        </div>
+      </section>
+
+      <section class="search-panel" id="search">
+        <form id="trip-form">
+          <label>Where do you want to go?<input id="destination" type="text" placeholder="Search a destination" /></label>
+          <label>When?<input type="date" aria-label="Travel date" /></label>
+          <label>Travellers<select aria-label="Number of travellers"><option>2 travellers</option><option>1 traveller</option><option>3 travellers</option><option>4+ travellers</option></select></label>
+          <button class="button" type="submit">Find my trip</button>
+        </form>
+      </section>
+
+      <section class="section" id="destinations">
+        <div class="section-heading"><div><p class="eyebrow">CURATED FOR YOU</p><h2>Places that stay with you</h2></div><a href="#all-destinations">View all destinations <span>→</span></a></div>
+        <div class="destination-grid" id="all-destinations">
+          <article class="destination-card bali"><div><p>Indonesia</p><h3>Bali</h3></div></article>
+          <article class="destination-card italy"><div><p>Italy</p><h3>Amalfi Coast</h3></div></article>
+          <article class="destination-card japan"><div><p>Japan</p><h3>Kyoto</h3></div></article>
+        </div>
+      </section>
+
+      <section class="experience-section" id="experiences">
+        <div class="experience-image"></div>
+        <div class="experience-copy"><p class="eyebrow">TRAVEL YOUR WAY</p><h2>More than a holiday</h2><p>From quiet coastlines to vibrant cities, we create travel experiences around the things that matter to you.</p><ul><li>Handpicked stays and local guides</li><li>Flexible itineraries, built around you</li><li>Support before and during your journey</li></ul><a class="button" href="#search">Start planning <span>→</span></a></div>
+      </section>
+
+      <section class="section testimonials" id="about">
+        <p class="eyebrow">FROM OUR TRAVELLERS</p><h2>“Every detail felt effortless.”</h2><p class="quote">Wanderly gave us a trip we'll talk about for years. It felt personal from the first call to the last sunset.</p><p class="author">Maya &amp; Daniel — London</p>
+      </section>
+    </main>
+
+    <footer><a class="logo" href="#home">wanderly<span>.</span></a><p>Made for curious travellers.</p><p>© <span id="year"></span> Wanderly</p></footer>
+    <div class="toast" role="status" aria-live="polite"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
