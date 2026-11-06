@@ -27,6 +27,7 @@ $result = $conn->query(
         <span class="brand">Travel Agency</span>
         <span>
             Hello, <?php echo htmlspecialchars($_SESSION["full_name"]); ?>
+            <a href="logout.php">Log out</a>
         </span>
     </nav>
 
