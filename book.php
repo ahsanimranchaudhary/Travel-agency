@@ -9,8 +9,7 @@ if (!isset($_SESSION["user_id"])) {
 
 $trip_id = isset($_GET["id"]) ? (int)$_GET["id"] : 0;
 
-// Fetch trip price and details
-$stmt = $conn->prepare("SELECT title, price_pkr FROM Trips WHERE trip_id = ?");
+$stmt = $conn->prepare("SELECT title, price_pkr, max_capacity FROM Trips WHERE trip_id = ?");
 $stmt->bind_param("i", $trip_id);
 $stmt->execute();
 $trip = $stmt->get_result()->fetch_assoc();
@@ -21,6 +20,14 @@ if (!$trip) {
     exit;
 }
 
+$sum_stmt = $conn->prepare("SELECT COALESCE(SUM(seats_booked), 0) AS booked FROM Bookings WHERE trip_id = ? AND status != 'cancelled'");
+$sum_stmt->bind_param("i", $trip_id);
+$sum_stmt->execute();
+$booked_data = $sum_stmt->get_result()->fetch_assoc();
+$sum_stmt->close();
+
+$available_seats = max(0, (int)$trip["max_capacity"] - (int)$booked_data["booked"]);
+
 $error = "";
 $success = "";
 
@@ -29,15 +36,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($seats_booked <= 0) {
         $error = "Please enter a valid number of seats.";
+    } elseif ($seats_booked > $available_seats) {
+        $error = "Warning: Overbooking! Only $available_seats seat(s) are available for this trip.";
     } else {
         $user_id = $_SESSION["user_id"];
         $total_amount = $seats_booked * $trip["price_pkr"];
-        $status = "confirmed"; // Default status
+        $status = "confirmed";
 
         $insert = $conn->prepare("INSERT INTO Bookings (user_id, trip_id, seats_booked, total_amount, status) VALUES (?, ?, ?, ?, ?)");
         $insert->bind_param("iiids", $user_id, $trip_id, $seats_booked, $total_amount, $status);
         
         if ($insert->execute()) {
+            $available_seats -= $seats_booked; // Update available seats after booking
             $success = "Booking successful! Total amount: PKR " . number_format($total_amount);
         } else {
             $error = "Booking failed. Please try again.";
@@ -62,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <main class="container auth-box" style="margin-top: 40px;">
         <h2>Book Trip: <?php echo htmlspecialchars($trip["title"]); ?></h2>
         <p>Price per seat: PKR <?php echo number_format($trip["price_pkr"]); ?></p>
+        <p>Available Seats: <strong><?php echo $available_seats; ?></strong></p>
 
         <?php if ($error !== ""): ?>
             <p class="msg error"><?php echo htmlspecialchars($error); ?></p>
