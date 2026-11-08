@@ -64,6 +64,21 @@ document.querySelectorAll('.destination-card').forEach((card) => {
   });
 });
 
+const revealItems = document.querySelectorAll('.section, .experience-section');
+const revealObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('reveal', 'visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.14 });
+
+revealItems.forEach((item) => {
+  item.classList.add('reveal');
+  revealObserver.observe(item);
+});
+
 form.addEventListener('submit', (event) => {
   event.preventDefault();
   const place = destination.value.trim();
